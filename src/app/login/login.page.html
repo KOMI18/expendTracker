@@ -1,0 +1,44 @@
+
+  
+<ion-header [translucent]="true" style="--ion-background-color:#ffffff;">
+    <ion-toolbar>
+      <ion-title style="color: rgb(255, 255, 255);" class="toolbar-item">Login</ion-title>
+    </ion-toolbar>
+    
+  
+</ion-header>
+
+<ion-content style="background-color: antiquewhite;--ion-background-color:#dad1d1">
+  <ion-card  *ngIf="errorMessage" class="resume-cat" style="background-color: #ffffff;">
+    <div class="cat-info">
+        <img src="../../assets/img/error.svg" class="add-icone" style="color:rgb(255, 255, 255); background-color: rgb(248, 248, 248);" alt="sac">
+        <ion-card-content style="margin: 0; color: rgb(0, 0, 0); font-weight: bold;"> {{errorMessage}} </ion-card-content>
+    </div>
+   
+  </ion-card>
+<ion-card style="background-color: #ffffff;">
+    <ion-card-header>
+       <img src="assets/img/login.svg"  class = "login-img"alt="svg-logo">
+     </ion-card-header>
+        <ion-card-content>
+      
+          <label style="color: #000000;">Email</label>
+          <ion-input style="color: #000000;  background-color: #dad1d1; border-radius: 30px;"  [(ngModel)]="UserName" ></ion-input>
+    
+          
+          <label style="color: #000000;">Mot de passe</label>
+          <ion-input style="color: #000000;  background-color: #dad1d1;  border-radius: 30px;"  type="password" [(ngModel)]="passwordInput" ></ion-input>
+
+      <br>
+
+      <ion-progress-bar *ngIf="loading" type="indeterminate"></ion-progress-bar>
+      <br>
+      <ion-button expand="block" class="form-button" (click)="logMeIn()">Login</ion-button>
+      <div class="div">
+          <hr>------------- or ----------<hr>
+      </div>
+      <ion-button expand = "block"  (click)="singUpme()"> Register</ion-button>
+
+    </ion-card-content>
+  </ion-card> 
+</ion-content>

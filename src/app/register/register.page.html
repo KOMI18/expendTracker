@@ -1,0 +1,63 @@
+
+  
+<ion-header [translucent]="true" style="--ion-background-color:#ffffff;">
+  <ion-toolbar>
+    <ion-title style="color: rgb(255, 255, 255);" class="toolbar-item">Register</ion-title>
+  </ion-toolbar>
+  
+
+</ion-header>
+
+<ion-content style="background-color: antiquewhite;--ion-background-color:#dad1d1">
+  <ion-card  *ngIf="instruction" class="resume-cat" style="background-color: #85c852;">
+    <div class="cat-info">
+        <!-- <img src="../../assets/img/error.svg" class="add-icone" style="color:rgb(255, 255, 255); background-color: rgb(248, 248, 248);" alt="sac"> -->
+        <ion-card-content style="margin: 0; color: rgb(255, 255, 255); font-weight: bold;"> {{instruction}} </ion-card-content>
+    </div>
+   
+  </ion-card>
+  <ion-card  *ngIf="errorMessage" class="resume-cat" style="background-color: #dd1d16;">
+    <div class="cat-info">
+        <!-- <img src="../../assets/img/error.svg" class="add-icone" style="color:rgb(255, 255, 255); background-color: rgb(248, 248, 248);" alt="sac"> -->
+        <ion-card-content style="margin: 0; color: rgb(255, 255, 255); font-weight: bold;"> {{errorMessage}} </ion-card-content>
+    </div>
+   
+  </ion-card>
+<ion-card style="background-color: #ffffff;">
+  <ion-card-header>
+     <img src="assets/img/login.svg"  class = "login-img"alt="svg-logo">
+   </ion-card-header>
+      <ion-card-content>
+          <label style="color: #000000;">Nom</label>
+          <ion-input  style="color:#000000; background-color: #dad1d1;  border-radius: 30px;" type="text" [(ngModel)]="name" fill="outline"></ion-input>
+    
+          <label style="color: #000000;">Email</label>
+          <ion-input style="color: #000000;  background-color: #dad1d1; border-radius: 30px;" type="email" [(ngModel)]="email" ></ion-input>
+    
+          <label style="color: #000000;">Mot de passe</label>
+          <ion-input style="color: #000000;  background-color: #dad1d1;  border-radius: 30px;"  type="password" [(ngModel)]="password" ></ion-input>
+        
+          <ion-label style="color: #000000;" >Plage de revenue mensuelle</ion-label> 
+          <ion-select style="background-color:  #dad1d1;  border-radius: 30px; color: #000000;" [(ngModel)]="budget" placeholder="Sélectionnez votre plage de revenu mensuel en FCFA">
+            <ion-select-option value="100000">Moins de 100 000 FCFA</ion-select-option>
+            <ion-select-option value="175000">100 000 FCFA - 250 000 FCFA</ion-select-option>
+            <ion-select-option value="375000">250 000 FCFA - 500 000 FCFA</ion-select-option>
+            <ion-select-option value="750000">500 000 FCFA - 1 000 000 FCFA</ion-select-option>
+            <ion-select-option value="1500000">1 000 000 FCFA - 2 000 000 FCFA</ion-select-option>
+            <ion-select-option value="2000000 ">Plus de 2 000 000 FCFA</ion-select-option>
+          </ion-select>
+   
+    <br>
+    <ion-button expand = "block" (click)="registe()"  >Register</ion-button>
+
+    <div class="div">
+        <hr>------------- or ----------<hr>
+    </div>
+
+    <ion-progress-bar *ngIf="loading" type="indeterminate"></ion-progress-bar> <br>
+
+    <ion-button expand="block" (click)="login()" class="form-button">Login</ion-button>
+
+  </ion-card-content>
+</ion-card> 
+</ion-content>

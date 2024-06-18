@@ -1,0 +1,27 @@
+.div{
+    display: flex;
+    justify-content: center;
+}
+.resume-cat{
+    display: flex;
+    justify-content: space-between;
+    height: 100px;
+    padding: 5px;
+    border-radius: 20px;
+  }
+  .resume-cat{
+    border-radius: 10px;
+  }
+  .add-icone{
+    border-radius: 100%;
+    padding: 10px;
+    background-color: #eff2f4;
+    margin-top: 4px;
+    z-index: 2;
+    position: relative;
+    // color: #3a29a8;
+    font-size: 40px;
+ }
+ .login-img{
+  height: 150px;
+}

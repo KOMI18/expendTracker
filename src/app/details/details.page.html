@@ -1,0 +1,56 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button default-href="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{catName}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+<div *ngIf="expendFortype.length === 0;">
+  <p>Aucune dépense trouvée</p>
+</div>
+<ion-content [fullscreen]="true"  style="--ion-background-color:#dad1d1;" >
+  <ion-content [fullscreen]="true" >
+    <div class="detail-uniq" *ngFor="let exp of expendFortype" >
+      <ion-card style="background-color: #ffffff;" >
+        <ion-card-header>
+          <ion-card-title>{{exp.montant}}</ion-card-title>
+          <ion-card-subtitle></ion-card-subtitle>
+        </ion-card-header>
+      
+        <ion-card-content>
+          {{exp.description}}
+        </ion-card-content>
+      </ion-card>
+      
+    </div>
+    <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+      <ion-fab-button>
+        <ion-icon name="chevron-up-circle"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-list side="top">
+        <ion-fab-button id="open-modal-stat">
+          <ion-icon name="trending-up-outline"></ion-icon>
+        </ion-fab-button>
+        <ion-fab-button>
+          <ion-icon name="alert-outline"></ion-icon>
+        </ion-fab-button>
+        
+      </ion-fab-list>
+    </ion-fab>
+ 
+</ion-content>
+<ion-modal trigger="open-modal-stat" style="--ion-background-color:#dad1d1;" >
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-button (click)="cancel()">Cancel</ion-button>
+        </ion-buttons>
+        <ion-title>Statistique</ion-title>
+          
+      </ion-toolbar>
+    </ion-header>
+    <canvas #chart ></canvas>
+  </ng-template>
+</ion-modal>

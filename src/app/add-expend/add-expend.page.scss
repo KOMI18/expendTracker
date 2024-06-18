@@ -1,0 +1,50 @@
+.list-input{
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 0px;
+}
+ion-select{
+    background-color: aliceblue;
+    border-radius: 30px;
+    height: 60px;
+    margin-top: 30px;
+
+}
+.saveExpend{
+    width: 90%;
+  background: linear-gradient(to bottom right, #3498db, #e74c3c, #f39c12);
+  height: 50px;
+  border-radius: 20px;
+  margin-top: 5%;
+  text-align: center;
+  margin-left: 20px;
+}
+.principal-card{
+  background: linear-gradient(to bottom right, #3498db, #e74c3c, #f39c12);
+
+}
+input {
+    background-color: aliceblue;
+    border-radius: 30px;
+    height: 60px;
+    margin-top: 30px;
+    color: black;
+    width: 100%;
+    border-color: aliceblue;
+}
+.message{
+  animation-name: message-anim;
+  animation-duration: .5s;
+  animation-timing-function: ease-in;
+}
+@keyframes message-anim {
+      from{
+        transform: translateY(-100%);
+        opacity: 0;
+      }
+      to{
+        transform: translateY(0);
+        opacity: 1;
+
+      }
+}

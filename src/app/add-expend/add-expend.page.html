@@ -1,0 +1,54 @@
+<ion-header >
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button default-href="/home"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true"  style="--ion-background-color:#dad1d1;" >
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large" style="color: black;"> Ajouter une dépense</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-card class="principal-card">
+    <ion-card-content>
+      <ion-card-title *ngIf="montant" style="text-align: center;">
+        <span  style="font-size: 50px;">{{montant}}</span> Fcfa
+    </ion-card-title>
+    <ion-card-subtitle *ngIf="categorie" style="text-align: center;">
+      <span  style="font-size: 30px; color: #ffffff;">{{categorie}}</span>
+    </ion-card-subtitle>
+    <ion-card-title *ngIf="!montant" style="text-align: center;">
+      <span  style="font-size: 70px;">0</span> Fcfa
+  </ion-card-title>
+    </ion-card-content>
+  </ion-card>
+  <ion-progress-bar *ngIf="loading" style="margin-top: 5px;" type="indeterminate"></ion-progress-bar> <br>
+  <ion-card *ngIf="errorMessage"> <ion-card-content style="margin: 0; color: rgb(255, 255, 255); font-weight: bold; background-color: rgb(179, 7, 7);"> {{errorMessage}} </ion-card-content></ion-card>
+  
+  <ion-card *ngIf="message" class="message"> <ion-card-content style="margin: 0; color: rgb(255, 255, 255); font-weight: bold; background-color: rgb(14, 146, 65);"> {{message}} </ion-card-content></ion-card>
+    <ion-list class="list-input" style="background-color: #dad1d1;">
+     <ion-select label="" placeholder="Categories" style="background-color:  #ffffff;  border-radius: 30px; color: #000000;"  [(ngModel)]="categorie">
+        
+       <ion-select-option value="Besoin">Besoin</ion-select-option>
+        <ion-select-option value="Envie-Loisir">Envie / Loisir</ion-select-option>
+        <ion-select-option value="Epargne-Rembourssement">Epargne / Rembourssement</ion-select-option>
+        
+
+      </ion-select>
+   
+   <div class="montant">
+      <input type="number" placeholder="Montant" min="1"  [(ngModel)]="montant"/>
+   </div>
+   <div class="desc">
+        <input type="text" placeholder="description" [(ngModel)]="description"/>
+    </div>
+   
+    
+  </ion-list>  
+  <button class="saveExpend" (click)="saveExpend()"> Enregistrer</button>
+</ion-content>
+
+

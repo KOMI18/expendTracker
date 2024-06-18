@@ -1,0 +1,98 @@
+.image-background {
+    background-image: url('../../assets/img/7\ Secrets\ That\ Can\ Increase\ Your\ Leadership\ Impact\ \(3\).jpeg');
+    background-size: cover;
+    height: 100vh;
+    width: 100%;
+    position: relative;
+  }
+  
+  .text-overlay {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    text-align: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+h1, h3, p{
+    animation: zoom-in 0.5s ease-out;
+
+}
+@keyframes zoom-in {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+      }
+    to {
+        transform: translateY(0%);
+        opacity: 1;
+    }
+}
+  .button {
+    // background-color: white;
+  color: black;
+  background: linear-gradient(to bottom right, #3498db, #e74c3c, #f39c12);
+  padding: 40px;
+  border-radius: 100%;
+  animation-name: opacity;
+  animation-iteration-count: infinite;
+  animation-duration: 1s;
+  -webkit-transition: all 0.9s ease;
+     -moz-transition: all 0.9s ease;
+       -o-transition: all 0.9s ease;
+          transition: all 0.9s ease;
+  animation-direction: alternate;
+  }  
+  .button:hover {
+   
+  background: linear-gradient(to bottom right, #3498db, #e74c3c, #f39c12);
+  padding: 40px;
+  border-radius: 100%;
+  animation-name: opacity;
+  animation-iteration-count: 0;
+  animation-duration: 1s;
+  -webkit-transition: all 0.9s ease;
+     -moz-transition: all 0.9s ease;
+       -o-transition: all 0.9s ease;
+          transition: all 0.9s ease;
+  animation-direction: alternate;
+  }  
+  @keyframes opacity {
+    0% {
+        opacity: 0;
+      }
+    10%{
+       opacity:.1;
+
+    }
+    20%{
+       opacity:.2;
+
+    }
+    40%{
+       opacity:.3;
+
+    }
+    60%{
+       opacity:.5;
+
+    }
+    
+    80% {
+       opacity:.8;
+        
+      
+    }
+    100% {
+       opacity:1;
+        
+      
+    }
+}
