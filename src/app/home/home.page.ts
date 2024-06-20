@@ -95,7 +95,7 @@ export class HomePage {
       }
 
       // this.updateLoadingStatus(category);
-      this.initializeChart(10000 , 15000 , 2000);
+      this.initializeChart(100000 , 150000 , 200000);
      
     });
    
