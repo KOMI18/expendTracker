@@ -13,11 +13,9 @@ import { IonModal } from '@ionic/angular';
   
 })
 export class HomePage {
-  isFooterHidden: boolean = false;
-  lastScrollTop: number = 0;
-
-  @ViewChild('chart')  chartElement!: ElementRef;
-
+  uniiqueRef : any  ;
+  tab:{categorie: string ; created_at:string ,description:string; montant:number; userId :string }[] = []
+  showExpend : boolean = !false
   @ViewChild(IonModal)
   modal!: IonModal;
   name: string = "" ;
@@ -25,15 +23,103 @@ export class HomePage {
   email : any ;
   allCategorie: any[] = [];
   allExpend: any [] = [];
-  totalExpend : number = 0 ;
-  expendForBesoin : number = 0;
-  expendForLoisir : number = 0
-  expendForembourssement : number = 0
-  uniiqueRef : any  ;
-  tab:{categorie: string ; created_at:string ,description:string; montant:number; userId :string }[] = []
+  // totalExpend : number = 0 ;
+  // @ViewChild('chart') chartElement!: ElementRef;
+  // public chartInstance: any;
+  // expendForBesoin : number = 0;
+  // expendForLoisir : number = 0
+  // expendForembourssement : number = 0
 
-  showExpend : boolean = !false
-  handleRefresh(event: { target: { complete: () => void; }; }) {
+  @ViewChild('chart') chartElement!: ElementRef;
+  public chartInstance: any;
+
+  public expendForBesoin = 0;
+  public expendForLoisir = 0;
+  public expendForembourssement = 0;
+  public totalExpend = 0;
+
+  private isBesoinLoaded = false;
+  private isLoisirLoaded = false;
+  private isEpargneLoaded = false;
+
+  ngOnInit() {
+    const auth = getAuth();
+        onAuthStateChanged(auth, (user) => {
+          if (user) {
+            // L'utilisateur est connecté
+            this.currentUser = user;
+            console.log('Utilisateur connecté :', this.currentUser);
+            this.name = ""+user.displayName
+          } else {
+            // Aucun utilisateur n'est connecté
+            console.log('Aucun utilisateur connecté');
+            this.router.navigate(['/login'])
+          }
+        });
+    try {
+      const us_id = sessionStorage.getItem('us_id');
+      const database = getDatabase();
+      const nodeRefExpBesoin = ref(database, `/expends/${us_id}/Besoin`);
+      const nodeRefExpEpargne = ref(database, `/expends/${us_id}/Epargne-Rembourssement`);
+      const nodeRefExpLoisir = ref(database, `/expends/${us_id}/Envie-Loisir`);
+     
+       this.getData(nodeRefExpLoisir, "Envie-Loisir");
+       this.getData(nodeRefExpBesoin, 'Besoin');
+       this.getData(nodeRefExpEpargne, 'Epargne-Rembourssement');
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  getData(nodeRef: any, category: string) {
+    onChildAdded(nodeRef, (snapshot) => {
+      const allExpend = snapshot.val();
+      for (let expend in allExpend) {
+        if (expend === "montant") {
+          if (category === 'Besoin') {
+            this.expendForBesoin += allExpend.montant;
+            this.totalExpend += this.expendForBesoin;
+            
+          } else if (category === "Envie-Loisir") {
+            this.expendForLoisir += allExpend.montant;
+            this.totalExpend += allExpend.montant;
+
+          } else if (category === 'Epargne-Rembourssement') {
+            this.expendForembourssement += allExpend.montant;
+            this.totalExpend += this.expendForembourssement;
+            
+
+          }
+        }
+        
+      }
+
+      // this.updateLoadingStatus(category);
+      this.initializeChart(10000 , 15000 , 2000);
+     
+    });
+   
+  }
+
+
+  initializeChart(ep: number, bs: number, ls: number) {
+    const ctx = this.chartElement.nativeElement.getContext('2d');
+    this.chartInstance = new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Epargne-Rembourssement', 'Besoin', 'Loisir'],
+        datasets: [{
+          data: [ep, bs, ls],
+          backgroundColor: ['orange', 'rgb(35, 106, 144)', 'pink']
+        }]
+      }
+    });
+  }
+
+  details(category: string) {
+    console.log('Category:', category);
+  }
+handleRefresh(event: { target: { complete: () => void; }; }) {
     setTimeout(() => {
       // Any calls to load data go here
       event.target.complete();
@@ -53,150 +139,131 @@ export class HomePage {
        
         return sum ;
   }
-  onScroll() {
-    const scrollTop = window.screenY;
-
-    if (scrollTop > this.lastScrollTop) {
-      // Scrolling down
-      this.isFooterHidden = true;
-    } else {
-      // Scrolling up
-      this.isFooterHidden = false;
-    }
-    
-    this.lastScrollTop = scrollTop;
-    console.log(scrollTop);
-    
-    
-  }
- ngOnInit() {
-
  
-  // this.chrt(this.expendForembourssement,this.expendForBesoin, this.expendForLoisir); 
- 
-    const auth = getAuth();
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        // L'utilisateur est connecté
-        this.currentUser = user;
-        console.log('Utilisateur connecté :', this.currentUser);
-        this.name = ""+user.displayName
-      } else {
-        // Aucun utilisateur n'est connecté
-        console.log('Aucun utilisateur connecté');
-        this.router.navigate(['/login'])
-      }
-    });
-      try {
-        interface User{
-          montant : number ;
-          categorie : string;
-        }
-         const us_id = sessionStorage.getItem('us_id');
-         const database = getDatabase()
-         const nodeRefExpBesoin = ref( database  ,`/expends/${us_id}/Besoin`)
-         const nodeRefExpEpargne = ref( database  ,`/expends/${us_id}/Epargne-Rembourssement`)
-         const nodeRefExpLoisir = ref( database  ,`/expends/${us_id}/Envie-Loisir`)
 
-        onChildAdded(nodeRefExpBesoin, (snapshot) => {
+//  ngOnInit() {
+  
+//   const auth = getAuth();
+//     onAuthStateChanged(auth, (user) => {
+//       if (user) {
+//         // L'utilisateur est connecté
+//         this.currentUser = user;
+//         console.log('Utilisateur connecté :', this.currentUser);
+//         this.name = ""+user.displayName
+//       } else {
+//         // Aucun utilisateur n'est connecté
+//         console.log('Aucun utilisateur connecté');
+//         this.router.navigate(['/login'])
+//       }
+//     });
+//       try {
+//         interface User{
+//           montant : number ;
+//           categorie : string;
+//         }
+//          const us_id = sessionStorage.getItem('us_id');
+//          const database = getDatabase()
+//          const nodeRefExpBesoin = ref( database  ,`/expends/${us_id}/Besoin`)
+//          const nodeRefExpEpargne = ref( database  ,`/expends/${us_id}/Epargne-Rembourssement`)
+//          const nodeRefExpLoisir = ref( database  ,`/expends/${us_id}/Envie-Loisir`)
+//       onChildAdded(nodeRefExpBesoin, (snapshot) => {
            
-            const allExpend = snapshot.val()
-            console.log(allExpend);
-            for(let expend in allExpend){
-               if(expend === "montant"){
-                  this.expendForBesoin += allExpend.montant
-                  this.totalExpend+=this.expendForBesoin 
-                  console.log("allexpend for besoin" , this.expendForBesoin);
-                }
+//             const allExpend = snapshot.val()
+//             console.log(allExpend);
+//             for(let expend in allExpend){
+//                if(expend === "montant"){
+//                   this.expendForBesoin += allExpend.montant
+//                   this.totalExpend+=this.expendForBesoin 
+//                   console.log("allexpend for besoin" , this.expendForBesoin);
+//                   console.log("normalement ceci doit etre executer en premier " + this.expendForBesoin);
+//                   this.charts(this.expendForembourssement , this.expendForBesoin , this.expendForLoisir)
+
+//                 }
               
-            }
-          });
-          onChildAdded(nodeRefExpLoisir, (snapshot) => {
+//             }
+//           });
+//           onChildAdded(nodeRefExpLoisir, (snapshot) => {
            
-            const allExpend = snapshot.val()
-            console.log(allExpend);
-            for(let expend in allExpend){
-               if(expend === "montant"){
-                  this.expendForLoisir += allExpend.montant
-                  this.totalExpend+=this.expendForLoisir
+//             const allExpend = snapshot.val()
+//             console.log(allExpend);
+//             for(let expend in allExpend){
+//                if(expend === "montant"){
+//                   this.expendForLoisir += allExpend.montant
+//                   this.totalExpend+=this.expendForLoisir
+                  
+//                   console.log("allexpend for besoin" , this.expendForLoisir);
 
-                  console.log("allexpend for  besoin" , this.expendForBesoin);
-                }
+//                 }
                
-            }
-          });
-          onChildAdded(nodeRefExpEpargne, (snapshot) => {
+//             }
+//           });
+//           onChildAdded(nodeRefExpEpargne, (snapshot) => {
            
-            const allExpend = snapshot.val()
-            console.log(allExpend);
-            for(let expend in allExpend){
-               if(expend === "montant"){
-                  this.expendForembourssement+= allExpend.montant
-                  this.totalExpend+=this.expendForembourssement
+//             const allExpend = snapshot.val()
+//             console.log(allExpend);
+//             for(let expend in allExpend){
+//                if(expend === "montant"){
+//                   this.expendForembourssement+= allExpend.montant
+//                   this.totalExpend+=this.expendForembourssement
 
-                  console.log("allexpend for rembourssement" , this.expendForembourssement);
-                }
+//                   console.log("allexpend for rembourssement" , this.expendForembourssement);
+//                 }
                
-            }
+//             }
 
-          });
-          
-      } catch (error) {
-        console.error(error);
+//           });
+         
+//       } catch (error) {
+//         console.error(error);
                 
-      }
+//       }
+
+// }
+// // ngAfterViewInit
+// charts(ep:number , bs:number , ls:number){ 
+//   console.log('ici le graphe doit etre initialiser avec les valeur suivante ' + this.expendForBesoin);
+  
+//   const ctx = this.chartElement.nativeElement.getContext('2d');
+//   const chart = new Chart(ctx, {
+//     type: 'doughnut',
+    
+//     data: {
       
-     
-    }
- 
-      async logout() {
+//       labels: ['Epargne-Rembourssement', 'Besoin', 'Loisir'],
+//       datasets: [{
+//         data: [ ep, bs, ls],
+//         backgroundColor: ['orange', 'rgb(35, 106, 144)', 'pink']
+//       }]
+//     }
+//   });
+
+// }
+
+ async logout() {
         try {
           const auth = getAuth();
           await signOut(auth);
           console.log('Déconnexion réussie');
           this.router.navigate(['./login'])
-        
-        
         } catch (error) {
           console.error('Erreur lors de la déconnexion :', error);
         }
       }
-    setColor(){
-      
-    }
-   addExpend(){
+addExpend(){
     this.router.navigate(['/add-expend'])
-   
-   }
-   archive(){
+}
+archive(){
   console.log( "this.allExpend" , this.allExpend);
-       
-     
-   }
-   cancel() {
+}
+cancel() {
     this.modal.dismiss(null, 'cancel');
-  }
-  details(key : any){
-    this.router.navigate([`/details/${key}`])
-  }
-  // ngAfterViewInit
-  ngAfterViewInit(ep:number , bs:number , ls:number){ 
-    const ctx = this.chartElement.nativeElement.getContext('2d');
-    const chart = new Chart(ctx, {
-      type: 'doughnut',
-      
-      data: {
-        
-        labels: ['Epargne-Rembourssement', 'Besoin', 'Loisir'],
-        datasets: [{
-          data: [ ep, bs, ls],
-          backgroundColor: ['orange', 'rgb(35, 106, 144)', 'pink']
-        }]
-      }
-    });
+}
+  // details(key : any){
+  //   this.router.navigate([`/details/${key}`])
+  // }
   
 }
-}
+
 function onContentScroll(event: Event | undefined) {
   throw new Error('Function not implemented.');
 }
